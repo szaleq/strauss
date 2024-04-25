@@ -7,6 +7,7 @@
 
 namespace BrianHenryIE\Strauss\Composer;
 
+use BrianHenryIE\Strauss\Helpers\Path;
 use Composer\Composer;
 use Composer\Factory;
 use Composer\IO\NullIO;
@@ -128,6 +129,8 @@ class ComposerPackage
         } elseif (1 === preg_match('/.*\/([^\/]*\/[^\/]*)\/composer.json/', $composerJsonFileAbsolute, $output_array)) {
             // Not every package gets installed to a folder matching its name (crewlabs/unsplash).
             $this->relativePath = $output_array[1];
+        } else {
+            $this->relativePath = Path::normalize($this->packageName);
         }
 
         if (!is_null($overrideAutoload)) {
