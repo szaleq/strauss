@@ -7,7 +7,6 @@
 
 namespace BrianHenryIE\Strauss\Tests\Issues;
 
-use BrianHenryIE\Strauss\Console\Commands\Compose;
 use BrianHenryIE\Strauss\Tests\Integration\Util\IntegrationTestCase;
 use Mockery;
 use Symfony\Component\Console\Input\ArgvInput;

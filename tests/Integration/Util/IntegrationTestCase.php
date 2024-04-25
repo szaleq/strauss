@@ -7,9 +7,12 @@
 
 namespace BrianHenryIE\Strauss\Tests\Integration\Util;
 
+use BrianHenryIE\Strauss\Console\Commands\Compose;
 use BrianHenryIE\Strauss\TestCase;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Class IntegrationTestCase
@@ -38,6 +41,16 @@ class IntegrationTestCase extends TestCase
         @mkdir($this->testsWorkingDir);
     }
 
+    protected function runStrauss(): int
+    {
+
+        $inputInterfaceMock = $this->createMock(InputInterface::class);
+        $outputInterfaceMock = $this->createMock(OutputInterface::class);
+
+        $strauss = new Compose();
+
+        return $strauss->run($inputInterfaceMock, $outputInterfaceMock);
+    }
 
     /**
      * Delete $this->testsWorkingDir after each test.
