@@ -44,7 +44,7 @@ class IntegrationTestCase extends TestCase
 
         @mkdir($this->testsWorkingDir);
 
-        if( file_exists($this->projectDir . '/strauss.phar'))  {
+        if (file_exists($this->projectDir . '/strauss.phar')) {
             echo "strauss.phar found\n";
             ob_flush();
         }
@@ -52,7 +52,7 @@ class IntegrationTestCase extends TestCase
 
     protected function runStrauss(): int
     {
-        if( file_exists($this->projectDir . '/strauss.phar'))  {
+        if (file_exists($this->projectDir . '/strauss.phar')) {
             exec('php ' . $this->projectDir . '/strauss.phar', $output, $return_var);
             return $return_var;
         }
