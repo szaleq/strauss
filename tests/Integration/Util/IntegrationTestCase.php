@@ -21,11 +21,15 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class IntegrationTestCase extends TestCase
 {
+    protected string $projectDir;
+
     protected $testsWorkingDir;
 
     public function setUp(): void
     {
         parent::setUp();
+
+        $this->projectDir = getcwd();
 
         $this->testsWorkingDir = rtrim(sys_get_temp_dir(), DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR
             . 'strausstestdir' . DIRECTORY_SEPARATOR;
@@ -39,10 +43,19 @@ class IntegrationTestCase extends TestCase
         }
 
         @mkdir($this->testsWorkingDir);
+
+        if( file_exists($this->projectDir . '/strauss.phar'))  {
+            echo "strauss.phar found\n";
+            ob_flush();
+        }
     }
 
     protected function runStrauss(): int
     {
+        if( file_exists($this->projectDir . '/strauss.phar'))  {
+            exec('php ' . $this->projectDir . '/strauss.phar', $output, $return_var);
+            return $return_var;
+        }
 
         $inputInterfaceMock = $this->createMock(InputInterface::class);
         $outputInterfaceMock = $this->createMock(OutputInterface::class);
