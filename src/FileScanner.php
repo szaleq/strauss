@@ -30,6 +30,11 @@ class FileScanner
     protected DiscoveredSymbols $discoveredSymbols;
 
     /**
+     * @var string[]
+     */
+    protected array $excludePackagesFromPrefixing;
+
+    /**
      * FileScanner constructor.
      * @param \BrianHenryIE\Strauss\Composer\Extra\StraussConfig $config
      */
@@ -63,11 +68,13 @@ class FileScanner
     /**
      * TODO: Don't use preg_replace_callback!
      *
+     * @uses self::addDiscoveredNamespaceChange()
+     * @uses self::addDiscoveredClassChange()
+     *
      * @param string $contents
      */
-    protected function find(string $contents, File $file)
+    protected function find(string $contents, File $file): void
     {
-
         // If the entire file is under one namespace, all we want is the namespace.
         // If there were more than one namespace, it would appear as `namespace MyNamespace { ...`,
         // a file with only a single namespace will appear as `namespace MyNamespace;`.
@@ -78,7 +85,7 @@ class FileScanner
         /x'; //  # x: ignore whitespace in regex.
         if (1 === preg_match($singleNamespacePattern, $contents, $matches)) {
             $this->addDiscoveredNamespaceChange($matches['namespace'], $file);
-            return $contents;
+            return;
         }
 
         if (0 < preg_match_all('/\s*define\s*\(\s*["\']([^"\']*)["\']\s*,\s*["\'][^"\']*["\']\s*\)\s*;/', $contents, $constants)) {

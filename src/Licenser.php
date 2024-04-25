@@ -246,8 +246,7 @@ class Licenser
 
         $replaceInMultilineCommentFunction = function ($matches) use (
             $licenseDeclaration,
-            $modifiedDeclaration,
-            $straussLink
+            $modifiedDeclaration
         ) {
             // Find the line prefix and use it, i.e. could be none, asterisk or space-asterisk.
             $commentLines = explode("\n", $matches[2]);

@@ -13,6 +13,10 @@ abstract class DiscoveredSymbol
 
     protected string $replacement;
 
+    /**
+     * @param string $symbol The classname / namespace etc.
+     * @param File $file The file it was discovered in.
+     */
     public function __construct(string $symbol, File $file)
     {
         $this->symbol = $symbol;

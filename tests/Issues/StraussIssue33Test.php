@@ -33,7 +33,7 @@ class StraussIssue33Test extends IntegrationTestCase
   "minimum-stability": "dev",
   "require": {
     "afragen/wp-dependency-installer": "^3.1",
-    "mpdf/mpdf": "8.0.0"
+    "mpdf/mpdf": "*"
   },
   "extra": {
     "strauss": {

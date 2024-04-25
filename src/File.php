@@ -46,12 +46,12 @@ class File
         $this->sourceAbsolutePath  = $sourceAbsolutePath;
     }
 
-    public function getDependency()
+    public function getDependency(): ComposerPackage
     {
         return $this->dependency;
     }
 
-    public function getSourcePath(string $relativeTo = '')
+    public function getSourcePath(string $relativeTo = ''): string
     {
         return str_replace($relativeTo, '', $this->sourceAbsolutePath);
     }
@@ -137,12 +137,12 @@ class File
         return in_array('files', $this->autoloaderTypes, true);
     }
 
-    public function addDiscoveredSymbol(DiscoveredSymbol $symbol)
+    public function addDiscoveredSymbol(DiscoveredSymbol $symbol): void
     {
         $this->discoveredSymbols[$symbol->getOriginalSymbol()] = $symbol;
     }
 
-    public function getContents()
+    public function getContents(): string
     {
 
         // TODO: use flysystem

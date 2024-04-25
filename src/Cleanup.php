@@ -151,6 +151,9 @@ class Cleanup
         $installedJsonArray = $installedJsonFile->read();
 
         foreach ($installedJsonArray['packages'] as $key => $package) {
+            if (!isset($package['autoload'])) {
+                continue;
+            }
             $packageDir = $this->workingDir . $this->vendorDirectory . ltrim($package['install-path'], '.');
             $autoload_key = $package['autoload'];
             foreach ($autoload_key as $type => $autoload) {

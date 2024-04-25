@@ -5,16 +5,15 @@ namespace BrianHenryIE\Strauss;
 use ArrayAccess;
 use BrianHenryIE\Strauss\Composer\ComposerPackage;
 
-class DiscoveredFiles implements ArrayAccess
+class DiscoveredFiles
 {
-
     /** @var array<string,File> */
     protected array $files = [];
 
     /**
      * @param File $file
      */
-    public function add(File $file)
+    public function add(File $file): void
     {
         $this->files[$file->getTargetRelativePath()] = $file;
     }
@@ -26,47 +25,6 @@ class DiscoveredFiles implements ArrayAccess
     {
         return $this->files;
     }
-
-    /**
-     * @return bool
-     */
-    #[\ReturnTypeWillChange]
-    public function offsetExists($offset)
-    {
-        return isset($this->files[$offset]);
-    }
-
-    /**
-     * @return File
-     */
-    #[\ReturnTypeWillChange]
-    public function offsetGet($offset)
-    {
-        return $this->files[$offset];
-    }
-
-    /**
-     * @inheritDoc
-     */
-    #[\ReturnTypeWillChange]
-    public function offsetSet($offset, $value)
-    {
-        if (is_null($offset)) {
-            $this->files[] = $value;
-        } else {
-            $this->files[$offset] = $value;
-        }
-    }
-
-    /**
-     * @inheritDoc
-     */
-    #[\ReturnTypeWillChange]
-    public function offsetUnset($offset)
-    {
-        unset($this->files[$offset]);
-    }
-
 
     /**
      * Returns all found files.
