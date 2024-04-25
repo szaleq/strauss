@@ -157,9 +157,16 @@ class FileEnumerator
         return $this->discoveredFiles;
     }
 
-    protected function addFile(ComposerPackage $dependency, string $packageRelativePath, string $autoloaderType)
+    /**
+     * @uses \BrianHenryIE\Strauss\DiscoveredFiles::add()
+     *
+     * @param ComposerPackage $dependency
+     * @param string $packageRelativePath
+     * @param string $autoloaderType
+     * @throws \League\Flysystem\FilesystemException
+     */
+    protected function addFile(ComposerPackage $dependency, string $packageRelativePath, string $autoloaderType): void
     {
-
         $sourceAbsoluteFilepath = $dependency->getPackageAbsolutePath() . $packageRelativePath;
         $outputRelativeFilepath = $dependency->getRelativePath() . $packageRelativePath;
         $projectRelativePath    = $this->vendorDir . $outputRelativeFilepath;

@@ -72,15 +72,9 @@ class Copier
         }
     }
 
-
-    /**
-     *
-     */
     public function copy(): void
     {
-
         /**
-         * @var string $targetRelativeFilepath
          * @var File $file
          */
         foreach ($this->files->getFiles() as $file) {
