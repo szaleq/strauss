@@ -7,7 +7,6 @@
 
 namespace BrianHenryIE\Strauss\Composer;
 
-use BrianHenryIE\Strauss\Helpers\Path;
 use Composer\Composer;
 use Composer\Factory;
 use Composer\IO\NullIO;
@@ -124,13 +123,11 @@ class ComposerPackage
             $this->relativePath = $this->packageName;
             $this->packageAbsolutePath = realpath($vendorDirectory . DIRECTORY_SEPARATOR . $this->packageName) . DIRECTORY_SEPARATOR;
         // If the package is symlinked, the path will be outside the working directory.
-        } elseif (0 !== strpos($absolutePath, getcwd()) && 1 === preg_match('/.*\/([^\/]*\/[^\/]*)\/[^\/]*/', $vendorDirectory, $output_array)) {
+        } elseif (0 !== strpos($absolutePath, getcwd()) && 1 === preg_match('/.*[\/\\\\]([^\/\\\\]*[\/\\\\][^\/\\\\]*)[\/\\\\][^\/\\\\]*/', $vendorDirectory, $output_array)) {
             $this->relativePath = $output_array[1];
-        } elseif (1 === preg_match('/.*\/([^\/]*\/[^\/]*)\/composer.json/', $composerJsonFileAbsolute, $output_array)) {
-            // Not every package gets installed to a folder matching its name (crewlabs/unsplash).
+        } elseif (1 === preg_match('/.*[\/\\\\]([^\/\\\\]+[\/\\\\][^\/\\\\]+)[\/\\\\]composer.json/', $composerJsonFileAbsolute, $output_array)) {
+        // Not every package gets installed to a folder matching its name (crewlabs/unsplash).
             $this->relativePath = $output_array[1];
-        } else {
-            $this->relativePath = Path::normalize($this->packageName);
         }
 
         if (!is_null($overrideAutoload)) {
