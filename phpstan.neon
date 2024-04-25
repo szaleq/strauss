@@ -2,6 +2,7 @@ parameters:
     level: 7
     paths:
         - src
+        - bin/strauss
     bootstrapFiles:
         - phpstanbootstrap.php
     ignoreErrors:
