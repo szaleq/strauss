@@ -8,6 +8,7 @@
 namespace BrianHenryIE\Strauss\Tests\Issues;
 
 use BrianHenryIE\Strauss\Tests\Integration\Util\IntegrationTestCase;
+use Symfony\Component\Console\Input\InputInterface;
 
 /**
  * @package BrianHenryIE\Strauss\Tests\Issues
@@ -48,12 +49,7 @@ EOD;
 
         exec('composer install');
 
-        $inputInterfaceMock = $this->createMock(InputInterface::class);
-        $outputInterfaceMock = $this->createMock(OutputInterface::class);
-
-        $strauss = new Compose();
-
-        $result = $strauss->run($inputInterfaceMock, $outputInterfaceMock);
+        $result = $this->runStrauss();
 
         self::assertEqualsRN(0, $result);
 
