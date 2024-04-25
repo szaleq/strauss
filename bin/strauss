@@ -17,7 +17,7 @@ call_user_func(function ($version) {
         break;
     }
 
-    if (!class_exists(Composer\Autoload\ClassLoader::class)) {
+    if (!class_exists(BrianHenryIE\Strauss\Console\Application::class)) {
         fwrite(STDERR,
             'You must set up the project dependencies, run the following commands:' . PHP_EOL
             . 'curl -s https://getcomposer.org/installer | php' . PHP_EOL
