@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.18.1 April 2024
+
+* Fix: check for array before loop
+
 ## 0.18.0 April 2024
 
 
