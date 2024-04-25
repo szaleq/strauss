@@ -7,10 +7,7 @@
 
 namespace BrianHenryIE\Strauss\Tests\Issues;
 
-use BrianHenryIE\Strauss\Console\Commands\Compose;
 use BrianHenryIE\Strauss\Tests\Integration\Util\IntegrationTestCase;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Class MozartIssue48Test
@@ -42,12 +39,7 @@ EOD;
 
         exec('composer install');
 
-        $inputInterfaceMock = $this->createMock(InputInterface::class);
-        $outputInterfaceMock = $this->createMock(OutputInterface::class);
-
-        $mozartCompose = new Compose();
-
-        $result = $mozartCompose->run($inputInterfaceMock, $outputInterfaceMock);
+        $result = $this->runStrauss();
 
         self::assertEqualsRN(0, $result);
 

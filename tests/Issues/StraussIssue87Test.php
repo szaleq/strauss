@@ -7,10 +7,7 @@
 
 namespace BrianHenryIE\Strauss\Tests\Issues;
 
-use BrianHenryIE\Strauss\Console\Commands\Compose;
 use BrianHenryIE\Strauss\Tests\Integration\Util\IntegrationTestCase;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * @package BrianHenryIE\Strauss\Tests\Issues
@@ -51,12 +48,7 @@ EOD;
         $autoload_classmap_php_string = file_get_contents($this->testsWorkingDir . '/vendor/composer/autoload_classmap.php');
         self::assertStringContainsString("'Psr\\\\Container\\\\ContainerExceptionInterface' => \$vendorDir . '/psr/container/src/ContainerExceptionInterface.php',", $autoload_classmap_php_string);
 
-        $inputInterfaceMock = $this->createMock(InputInterface::class);
-        $outputInterfaceMock = $this->createMock(OutputInterface::class);
-
-        $strauss = new Compose();
-
-        $result = $strauss->run($inputInterfaceMock, $outputInterfaceMock);
+        $result = $this->runStrauss();
 
         exec('composer dump-autoload');
 

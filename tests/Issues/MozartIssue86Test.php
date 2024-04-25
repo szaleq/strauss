@@ -5,10 +5,7 @@
 
 namespace BrianHenryIE\Strauss\Tests\Issues;
 
-use BrianHenryIE\Strauss\Console\Commands\Compose;
 use BrianHenryIE\Strauss\Tests\Integration\Util\IntegrationTestCase;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  *
@@ -55,12 +52,7 @@ EOD;
 
         exec('composer install');
 
-        $inputInterfaceMock = $this->createMock(InputInterface::class);
-        $outputInterfaceMock = $this->createMock(OutputInterface::class);
-
-        $mozartCompose = new Compose();
-
-        $result = $mozartCompose->run($inputInterfaceMock, $outputInterfaceMock);
+        $result = $this->runStrauss();
 
         $php_string = file_get_contents($this->testsWorkingDir .'vendor-prefixed/pear/pear_exception/PEAR/Exception.php');
 
@@ -101,12 +93,7 @@ EOD;
 
         exec('composer install');
 
-        $inputInterfaceMock = $this->createMock(InputInterface::class);
-        $outputInterfaceMock = $this->createMock(OutputInterface::class);
-
-        $mozartCompose = new Compose();
-
-        $result = $mozartCompose->run($inputInterfaceMock, $outputInterfaceMock);
+        $result = $this->runStrauss();
 
         $php_string = file_get_contents($this->testsWorkingDir .'vendor-prefixed/afragen/wp-dependency-installer/wp-dependency-installer.php');
 
