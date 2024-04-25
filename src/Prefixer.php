@@ -33,7 +33,9 @@ class Prefixer
     protected array $excludeFilePatternsFromPrefixing;
 
     /**
-     * @var array<string, ComposerPackage>
+     * array<$workingDirRelativeFilepath, $package> or null if the file is not from a dependency (i.e. a project file).
+     *
+     * @var array<string, ?ComposerPackage>
      */
     protected array $changedFiles = array();
 
@@ -98,17 +100,13 @@ class Prefixer
     }
 
     /**
-     * @param array<string, NamespaceSymbol> $namespaceChanges
-     * @param string[] $classChanges
-     * @param string[] $constants
+     * @param DiscoveredSymbols $discoveredSymbols
      * @param string[] $relativeFilePaths
-     *
-     * @throws FileNotFoundException
-     * @throws Exception
+     * @return void
+     * @throws \League\Flysystem\FilesystemException
      */
     public function replaceInProjectFiles(DiscoveredSymbols $discoveredSymbols, array $relativeFilePaths): void
     {
-
         foreach ($relativeFilePaths as $workingDirRelativeFilepath) {
             if (! $this->filesystem->fileExists($workingDirRelativeFilepath)) {
                 continue;
@@ -120,7 +118,7 @@ class Prefixer
             $updatedContents = $this->replaceInString($discoveredSymbols, $contents);
 
             if ($updatedContents !== $contents) {
-                $this->changedFiles[ $workingDirRelativeFilepath ] = '';
+                $this->changedFiles[ $workingDirRelativeFilepath ] = null;
                 $this->filesystem->write($workingDirRelativeFilepath, $updatedContents);
             }
         }

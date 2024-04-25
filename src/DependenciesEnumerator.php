@@ -50,9 +50,9 @@ class DependenciesEnumerator
     protected array $filesAutoloaders = [];
 
     /**
-     * @param ?array{files?:array<string>, classmap?:array<string>, psr?:array<string,string|array<string>>} $overrideAutoload
+     * @var array{}|array<string, array{files?:array<string>,classmap?:array<string>,"psr-4":array<string|array<string>>}> $overrideAutoload
      */
-    protected array $overrideAutoload;
+    protected array $overrideAutoload = array();
 
     /**
      * Constructor.
@@ -72,6 +72,10 @@ class DependenciesEnumerator
         $this->filesystem = new Filesystem(new LocalFilesystemAdapter($this->workingDir));
     }
 
+    /**
+     * @return array<string, ComposerPackage> Packages indexed by package name.
+     * @throws Exception
+     */
     public function getAllDependencies(): array
     {
         $this->recursiveGetAllDependencies($this->requiredPackageNames);

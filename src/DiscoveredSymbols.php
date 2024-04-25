@@ -2,15 +2,17 @@
 
 namespace BrianHenryIE\Strauss;
 
-use ArrayAccess;
 use BrianHenryIE\Strauss\Types\ClassSymbol;
 use BrianHenryIE\Strauss\Types\ConstantSymbol;
 use BrianHenryIE\Strauss\Types\NamespaceSymbol;
 
-class DiscoveredSymbols implements ArrayAccess
+class DiscoveredSymbols
 {
-
-    /** @var array<string,DiscoveredSymbol> */
+    /**
+     * All discovered symbols, grouped by type, indexed by original name.
+     *
+     * @var array<string,array<string,DiscoveredSymbol>>
+     */
     protected array $types = [];
 
     public function __construct()
@@ -25,9 +27,9 @@ class DiscoveredSymbols implements ArrayAccess
     /**
      * @param DiscoveredSymbol $symbol
      */
-    public function add(DiscoveredSymbol $symbol)
+    public function add(DiscoveredSymbol $symbol): void
     {
-        $this->types[ get_class($symbol)][$symbol->getOriginalSymbol() ] = $symbol;
+        $this->types[get_class($symbol)][$symbol->getOriginalSymbol()] = $symbol;
     }
 
     /**
@@ -40,46 +42,6 @@ class DiscoveredSymbols implements ArrayAccess
             array_values($this->getClasses()),
             array_values($this->getConstants())
         );
-    }
-
-    /**
-     * @return bool
-     */
-    #[\ReturnTypeWillChange]
-    public function offsetExists($offset)
-    {
-        return isset($this->types[ $offset ]);
-    }
-
-    /**
-     * @return DiscoveredSymbol
-     */
-    #[\ReturnTypeWillChange]
-    public function offsetGet($offset)
-    {
-        return $this->types[ $offset ];
-    }
-
-    /**
-     * @inheritDoc
-     */
-    #[\ReturnTypeWillChange]
-    public function offsetSet($offset, $value)
-    {
-        if (is_null($offset)) {
-            $this->types[] = $value;
-        } else {
-            $this->types[ $offset ] = $value;
-        }
-    }
-
-    /**
-     * @inheritDoc
-     */
-    #[\ReturnTypeWillChange]
-    public function offsetUnset($offset)
-    {
-        unset($this->types[ $offset ]);
     }
 
     /**
@@ -98,7 +60,10 @@ class DiscoveredSymbols implements ArrayAccess
         return $this->types[NamespaceSymbol::class];
     }
 
-    public function getClasses()
+    /**
+     * @return array<string, ClassSymbol>
+     */
+    public function getClasses(): array
     {
         return $this->types[ClassSymbol::class];
     }

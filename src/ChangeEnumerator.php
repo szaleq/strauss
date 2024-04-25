@@ -19,7 +19,7 @@ class ChangeEnumerator
         $absoluteTargetDir = $workingDir . $config->getTargetDirectory();
     }
 
-    public function determineReplacements(DiscoveredSymbols $discoveredSymbols)
+    public function determineReplacements(DiscoveredSymbols $discoveredSymbols): void
     {
         foreach ($discoveredSymbols->getSymbols() as $symbol) {
             if (in_array(
