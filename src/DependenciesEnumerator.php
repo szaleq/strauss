@@ -50,6 +50,11 @@ class DependenciesEnumerator
     protected array $filesAutoloaders = [];
 
     /**
+     * @param ?array{files?:array<string>, classmap?:array<string>, psr?:array<string,string|array<string>>} $overrideAutoload
+     */
+    protected array $overrideAutoload;
+
+    /**
      * Constructor.
      *
      * @param string $workingDir

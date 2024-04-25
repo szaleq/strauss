@@ -30,6 +30,11 @@ class FileScanner
     protected DiscoveredSymbols $discoveredSymbols;
 
     /**
+     * @var string[]
+     */
+    protected array $excludePackagesFromPrefixing;
+
+    /**
      * FileScanner constructor.
      * @param \BrianHenryIE\Strauss\Composer\Extra\StraussConfig $config
      */
