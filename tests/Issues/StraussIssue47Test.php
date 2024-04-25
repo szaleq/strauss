@@ -180,12 +180,7 @@ EOD;
 
         exec('composer install');
 
-        $inputInterfaceMock = $this->createMock(InputInterface::class);
-        $outputInterfaceMock = $this->createMock(OutputInterface::class);
-
-        $strauss = new Compose();
-
-        $result = $strauss->run($inputInterfaceMock, $outputInterfaceMock);
+        $result = $this->runStrauss();
 
         // 0 for no errors.
         self::assertNotEquals(1, $result);
