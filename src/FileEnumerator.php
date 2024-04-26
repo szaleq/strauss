@@ -9,6 +9,7 @@ namespace BrianHenryIE\Strauss;
 
 use BrianHenryIE\Strauss\Composer\ComposerPackage;
 use BrianHenryIE\Strauss\Composer\Extra\StraussConfig;
+use BrianHenryIE\Strauss\Helpers\Path;
 use League\Flysystem\Filesystem;
 use League\Flysystem\Local\LocalFilesystemAdapter;
 use RecursiveDirectoryIterator;
@@ -125,7 +126,7 @@ class FileEnumerator
                             $this->addFile($dependency, $namespaceRelativePath, $type);
                         } elseif (is_dir($sourceAbsolutePath)) {
                             // trailingslashit(). (to remove duplicates).
-                            $sourcePath = rtrim($sourceAbsolutePath, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
+                            $sourcePath = Path::normalize($sourceAbsolutePath);
 
 //                          $this->findFilesInDirectory()
                             $finder = new Finder();
@@ -139,7 +140,7 @@ class FileEnumerator
                                     continue;
                                 }
 
-                                $namespaceRelativePath = rtrim($namespaceRelativePath, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
+                                $namespaceRelativePath = Path::normalize($namespaceRelativePath);
 
                                 $this->addFile(
                                     $dependency,
