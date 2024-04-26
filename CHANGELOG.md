@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.19.1 April 2024
+
+* Fix: was incorrectly deleting autoload keys from installed.json
+
 ## 0.19.0 April 2024
 
 * Fix: check for array before loop
