@@ -3,13 +3,15 @@
 call_user_func(function ($version) {
     $autoloaders = Phar::running() === ''
         ? [
+            __DIR__ . '/../../autoload.php',     // Relative path from vendor/brianhenryie/strauss/bin/strauss to vendor/autoload.php.
+            __DIR__ . '/../autoload.php',        // Relative path from vendor/bin/strauss to vendor/autoload.php.
+            __DIR__ . '/../vendor/autoload.php', // Relative path from bin/strauss to vendor/autoload.php.
             getcwd() . '/vendor/autoload.php',
             getcwd() . '/../../autoload.php',
-            __DIR__ . '/../vendor/autoload.php',
-            __DIR__ . '/../../../autoload.php',
+            __DIR__ . '/../../../autoload.php',  // I don't know if these last three are necessary.
         ]
         : [
-            __DIR__ . '/../vendor/autoload.php',
+            __DIR__ . '/../vendor/autoload.php', // Inside phar.
         ];
 
     foreach ($autoloaders as $autoloader) {
