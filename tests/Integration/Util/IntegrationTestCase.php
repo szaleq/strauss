@@ -92,7 +92,7 @@ class IntegrationTestCase extends TestCase
                 unlink($file);
             } elseif ($file->isDir()) {
                 rmdir($file->getRealPath());
-            } else {
+            } elseif (is_readable($file->getRealPath())) {
                 unlink($file->getRealPath());
             }
         }
