@@ -1,12 +1,23 @@
 # Change Log
 
-## 0.18.1 April 2024
+## 0.19.0 April 2024
 
 * Fix: check for array before loop
+* Fix: filepaths on Windows (still work to do for Windows)
+* Update: tidy `bin/strauss`
+* Run tests with project classes + with built phar
+* Allow `symfony/console` & `symfony/finder` `^7` for Laravel 11 compatibility
+* Add: `scripts/createphar.sh`
+* Lint: most PhpStan level 7
 
 ## 0.18.0 April 2024
 
-
+* Add: GitHub Action to update bin version number from CHANGELOG.md
+* Fix: casting a namespaced class to a string
+* Fix: composer dump-autoload error after delete-vendor-files/delete-vendor-packages
+* Fix: add missing built-in PHP interfaces to exclude rules
+* Fix: Undefined offset when seeing namespace
+* Refactoring for clarity and pending issues
 
 ## 0.14.0 07-March-2023
 
