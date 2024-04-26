@@ -154,7 +154,11 @@ class Cleanup
             if (!isset($package['autoload'])) {
                 continue;
             }
-            $packageDir = $this->workingDir . $this->vendorDirectory . ltrim($package['install-path'], '.');
+            $packageDir = $this->workingDir . $this->vendorDirectory . ltrim($package['install-path'], '.' . DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
+            if (!is_dir($packageDir)) {
+                // pcre, xdebug-handler.
+                continue;
+            }
             $autoload_key = $package['autoload'];
             foreach ($autoload_key as $type => $autoload) {
                 switch ($type) {
