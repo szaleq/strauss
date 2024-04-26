@@ -89,16 +89,18 @@ class IntegrationTestCase extends TestCase
         $files = new RecursiveIteratorIterator($it, RecursiveIteratorIterator::CHILD_FIRST);
         foreach ($files as $file) {
             if (is_link($file)) {
+                unlink($file);
+            } elseif (false !== strpos('WIN', PHP_OS)
+                && substr(strrchr(strtolower($file->getRealPath()), '.'), 1)
+            ) {
                 /**
-                 * `unlink()` will not work on Windows. `rimdir()` will not work if there are files in the directory.
+                 * `unlink()` will not work on Windows. `rmdir()` will not work if there are files in the directory.
+                 * "On windows, take care that `is_link()` returns false for Junctions."
                  *
+                 * @see https://www.php.net/manual/en/function.is-link.php#113263
                  * @see https://stackoverflow.com/a/18262809/336146
                  */
-                if (false === strpos('WIN', PHP_OS)) {
-                    unlink($file);
-                } else {
-                    rmdir($file->getRealPath());
-                }
+                rmdir($file->getRealPath());
             } elseif ($file->isDir()) {
                 rmdir($file->getRealPath());
             } elseif (is_readable($file->getRealPath())) {
