@@ -66,6 +66,21 @@ class Cleanup
                 $absolutePath = str_replace(['\\','/'], DIRECTORY_SEPARATOR, $absolutePath);
 
                 if (is_link($absolutePath)) {
+                    unlink($absolutePath);
+                } elseif (false !== strpos('WIN', PHP_OS)
+                    && substr(strrchr(strtolower($absolutePath), '.'), 1) === 'lnk'
+                ) {
+                    /**
+                     * `unlink()` will not work on Windows. `rmdir()` will not work if there are files in the directory.
+                     * "On windows, take care that `is_link()` returns false for Junctions."
+                     *
+                     * @see https://www.php.net/manual/en/function.is-link.php#113263
+                     * @see https://stackoverflow.com/a/18262809/336146
+                     */
+                    rmdir($file->getRealPath());
+                }
+
+                if (is_link()) {
                     /**
                      * `unlink()` will not work on Windows. `rimdir()` will not work if there are files in the directory.
                      *
