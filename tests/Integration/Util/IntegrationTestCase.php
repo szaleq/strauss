@@ -91,7 +91,7 @@ class IntegrationTestCase extends TestCase
             if (is_link($file)) {
                 unlink($file);
             } elseif (false !== strpos('WIN', PHP_OS)
-                && substr(strrchr(strtolower($file->getRealPath()), '.'), 1) === 'lnk'
+                && stat($file)['nlink'] !== lstat($file)['nlink']
             ) {
                 /**
                  * `unlink()` will not work on Windows. `rmdir()` will not work if there are files in the directory.
@@ -100,7 +100,7 @@ class IntegrationTestCase extends TestCase
                  * @see https://www.php.net/manual/en/function.is-link.php#113263
                  * @see https://stackoverflow.com/a/18262809/336146
                  */
-                rmdir($file->getRealPath());
+                rmdir($file);
             } elseif ($file->isDir()) {
                 rmdir($file->getRealPath());
             } elseif (is_readable($file->getRealPath())) {

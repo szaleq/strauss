@@ -68,7 +68,7 @@ class Cleanup
                 if (is_link($absolutePath)) {
                     unlink($absolutePath);
                 } elseif (false !== strpos('WIN', PHP_OS)
-                    && substr(strrchr(strtolower($absolutePath), '.'), 1) === 'lnk'
+                    && stat($absolutePath)['nlink'] !== lstat($absolutePath)['nlink']
                 ) {
                     /**
                      * `unlink()` will not work on Windows. `rmdir()` will not work if there are files in the directory.
@@ -77,20 +77,7 @@ class Cleanup
                      * @see https://www.php.net/manual/en/function.is-link.php#113263
                      * @see https://stackoverflow.com/a/18262809/336146
                      */
-                    rmdir($file->getRealPath());
-                }
-
-                if (is_link()) {
-                    /**
-                     * `unlink()` will not work on Windows. `rimdir()` will not work if there are files in the directory.
-                     *
-                     * @see https://stackoverflow.com/a/18262809/336146
-                     */
-                    if (false === strpos('WIN', PHP_OS)) {
-                        unlink($absolutePath);
-                    } else {
-                        rmdir($absolutePath);
-                    }
+                    rmdir($absolutePath);
                 }
 
                 if ($absolutePath !== realpath($absolutePath)) {
