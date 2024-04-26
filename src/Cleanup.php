@@ -68,6 +68,14 @@ class Cleanup
                 if (is_link($absolutePath)) {
                     unlink($absolutePath);
                 }
+                /**
+                 * `unlink()` will not work on Windows. `rimdir()` will not work if there are files in the directory.
+                 *
+                 * @see https://stackoverflow.com/a/18262809/336146
+                 */
+                if (false !== strpos('WIN', PHP_OS)) {
+                    @rmdir($absolutePath);
+                }
 
                 if ($absolutePath !== realpath($absolutePath)) {
                     continue;
