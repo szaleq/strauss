@@ -74,7 +74,7 @@ class Cleanup
                     if (false === strpos('WIN', PHP_OS)) {
                         unlink($absolutePath);
                     } else {
-                        @rmdir($absolutePath);
+                        rmdir($absolutePath);
                     }
                 }
 
