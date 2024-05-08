@@ -61,6 +61,7 @@ class Copier
     {
         if (! is_dir($this->absoluteTargetDir)) {
             $this->filesystem->createDirectory($this->absoluteTargetDir);
+            $this->filesystem->setVisibility($this->absoluteTargetDir, 'public');
         } else {
             foreach ($this->files->getFiles() as $file) {
                 $targetAbsoluteFilepath = $this->absoluteTargetDir . $file->getTargetRelativePath();
