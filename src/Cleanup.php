@@ -65,10 +65,15 @@ class Cleanup
                 // Fix for Windows paths.
                 $absolutePath = str_replace(['\\','/'], DIRECTORY_SEPARATOR, $absolutePath);
 
-                if (is_link($absolutePath)) {
+                $file = new \SplFileInfo($absolutePath);
+
+                if ($file->isLink()) {
                     unlink($absolutePath);
-                } elseif (false !== strpos('WIN', PHP_OS)
-                    && stat($absolutePath)['nlink'] !== lstat($absolutePath)['nlink']
+                }
+
+                if (false !== strpos('WIN', PHP_OS)
+                    && (stat($absolutePath)['nlink'] !== lstat($absolutePath)['nlink']
+                    || $file->isLink())
                 ) {
                     /**
                      * `unlink()` will not work on Windows. `rmdir()` will not work if there are files in the directory.

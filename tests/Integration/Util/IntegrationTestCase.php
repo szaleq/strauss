@@ -87,10 +87,17 @@ class IntegrationTestCase extends TestCase
 
         $it = new RecursiveDirectoryIterator($dir, RecursiveDirectoryIterator::SKIP_DOTS);
         $files = new RecursiveIteratorIterator($it, RecursiveIteratorIterator::CHILD_FIRST);
+        /** @var \SplFileInfo $file */
         foreach ($files as $file) {
-            if (is_link($file)) {
+            if ($file->isLink()) {
                 unlink($file);
-            } elseif (false !== strpos('WIN', PHP_OS)
+            } elseif ($file->isDir()) {
+                rmdir($file->getRealPath());
+            } elseif (is_readable($file->getRealPath())) {
+                unlink($file->getRealPath());
+            }
+
+            if (false !== strpos('WIN', PHP_OS)
                 && stat($file)['nlink'] !== lstat($file)['nlink']
             ) {
                 /**
@@ -101,10 +108,6 @@ class IntegrationTestCase extends TestCase
                  * @see https://stackoverflow.com/a/18262809/336146
                  */
                 rmdir($file);
-            } elseif ($file->isDir()) {
-                rmdir($file->getRealPath());
-            } elseif (is_readable($file->getRealPath())) {
-                unlink($file->getRealPath());
             }
         }
         rmdir($dir);
