@@ -15,6 +15,7 @@ use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Finder\Finder;
 
 /**
  * Class IntegrationTestCase
@@ -88,6 +89,39 @@ class IntegrationTestCase extends TestCase
         }
 
         $filesystem = new Filesystem(new LocalFilesystemAdapter('/'));
+
+        /**
+         * Delete symlinks first.
+         *
+         * @see https://github.com/thephpleague/flysystem/issues/1560
+         */
+        $finder = new Finder();
+        $finder->in($dir);
+        if ($finder->hasResults()) {
+
+            /** @var \SplFileInfo[] $files */
+            $files = iterator_to_array($finder->getIterator());
+            /** @var \SplFileInfo[] $links */
+            $links = array_filter(
+                $files,
+                function ($file) {
+                    return $file->isLink();
+                }
+            );
+
+            // Sort by longest filename first.
+            uasort($links, function ($a, $b) {
+                return strlen($b->getPath()) <=> strlen($a->getPath());
+            });
+
+            foreach ($links as $link) {
+                $linkPath = "{$link->getPath()}/{$link->getFilename()}";
+                unlink($linkPath);
+                if (is_readable($linkPath)) {
+                    rmdir($linkPath);
+                }
+            }
+        }
 
         $filesystem->deleteDirectory($dir);
     }
