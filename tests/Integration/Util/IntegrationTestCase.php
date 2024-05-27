@@ -104,14 +104,14 @@ class IntegrationTestCase extends TestCase
                      * @see https://www.php.net/manual/en/function.is-link.php#113263
                      * @see https://stackoverflow.com/a/18262809/336146
                      */
-                    rmdir($file);
+                    rmdir($file->getPath());
                 } else {
-                    unlink($file);
+                    unlink($file->getPath());
                 }
             } elseif ($file->isDir()) {
-                rmdir($file->getRealPath());
-            } elseif (is_readable($file->getRealPath())) {
-                unlink($file->getRealPath());
+                rmdir($file->getPath());
+            } elseif (is_readable($file->getPath())) {
+                unlink($file->getPath());
             }
         }
         rmdir($dir);
