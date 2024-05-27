@@ -105,7 +105,7 @@ class IntegrationTestCase extends TestCase
             $links = array_filter(
                 $files,
                 function ($file) {
-                    return $file->isLink();
+                    return $file->getPath() !== $file->getRealPath();
                 }
             );
 
