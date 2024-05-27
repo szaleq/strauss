@@ -65,24 +65,24 @@ class Cleanup
                 // Fix for Windows paths.
                 $absolutePath = str_replace(['\\','/'], DIRECTORY_SEPARATOR, $absolutePath);
 
-                $file = new \SplFileInfo($absolutePath);
+                $filesystem = new \Symfony\Component\Filesystem\Filesystem();
+                $isSymlink = function ($path) use ($filesystem): bool {
+                    return ! is_null($filesystem->readlink($path));
+                };
 
-                if ($file->isLink()) {
-                    unlink($absolutePath);
-                }
-
-                if (false !== strpos('WIN', PHP_OS)
-                    && (stat($absolutePath)['nlink'] !== lstat($absolutePath)['nlink']
-                    || $file->isLink())
-                ) {
-                    /**
-                     * `unlink()` will not work on Windows. `rmdir()` will not work if there are files in the directory.
-                     * "On windows, take care that `is_link()` returns false for Junctions."
-                     *
-                     * @see https://www.php.net/manual/en/function.is-link.php#113263
-                     * @see https://stackoverflow.com/a/18262809/336146
-                     */
-                    rmdir($absolutePath);
+                if ($isSymlink($absolutePath)) {
+                    if (false !== strpos('WIN', PHP_OS)) {
+                        /**
+                         * `unlink()` will not work on Windows. `rmdir()` will not work if there are files in the directory.
+                         * "On windows, take care that `is_link()` returns false for Junctions."
+                         *
+                         * @see https://www.php.net/manual/en/function.is-link.php#113263
+                         * @see https://stackoverflow.com/a/18262809/336146
+                         */
+                        rmdir($absolutePath);
+                    } else {
+                        unlink($absolutePath);
+                    }
                 }
 
                 if ($absolutePath !== realpath($absolutePath)) {
