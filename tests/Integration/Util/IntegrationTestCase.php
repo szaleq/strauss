@@ -90,6 +90,11 @@ class IntegrationTestCase extends TestCase
 
         $filesystem = new Filesystem(new LocalFilesystemAdapter('/'));
 
+        $symfonyFilesystem = new \Symfony\Component\Filesystem\Filesystem();
+        $isSymlink = function ($file) use ($symfonyFilesystem) {
+            return ! is_null($symfonyFilesystem->readlink($file));
+        };
+
         /**
          * Delete symlinks first.
          *
@@ -104,8 +109,8 @@ class IntegrationTestCase extends TestCase
             /** @var \SplFileInfo[] $links */
             $links = array_filter(
                 $files,
-                function ($file) {
-                    return $file->getPath() !== $file->getRealPath() && ! is_dir( $file->getPath() );
+                function ($file) use ($isSymlink) {
+                    return $isSymlink($file->getPath());
                 }
             );
 
