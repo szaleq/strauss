@@ -9,6 +9,8 @@ namespace BrianHenryIE\Strauss\Tests\Integration\Util;
 
 use BrianHenryIE\Strauss\Console\Commands\Compose;
 use BrianHenryIE\Strauss\TestCase;
+use League\Flysystem\Filesystem;
+use League\Flysystem\Local\LocalFilesystemAdapter;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use Symfony\Component\Console\Input\InputInterface;
@@ -85,35 +87,8 @@ class IntegrationTestCase extends TestCase
             return;
         }
 
-        $it = new RecursiveDirectoryIterator($dir, RecursiveDirectoryIterator::SKIP_DOTS);
-        $files = new RecursiveIteratorIterator($it, RecursiveIteratorIterator::CHILD_FIRST);
+        $filesystem = new Filesystem(new LocalFilesystemAdapter('/'));
 
-        $filesystem = new \Symfony\Component\Filesystem\Filesystem();
-        $isSymlink = function ($path) use ($filesystem): bool {
-            return ! is_null($filesystem->readlink($path));
-        };
-
-        /** @var \SplFileInfo $file */
-        foreach ($files as $file) {
-            if ($isSymlink($file->getPath())) {
-                if (false !== strpos('WIN', PHP_OS)) {
-                    /**
-                     * `unlink()` will not work on Windows. `rmdir()` will not work if there are files in the directory.
-                     * "On windows, take care that `is_link()` returns false for Junctions."
-                     *
-                     * @see https://www.php.net/manual/en/function.is-link.php#113263
-                     * @see https://stackoverflow.com/a/18262809/336146
-                     */
-                    rmdir($file->getPath());
-                } else {
-                    unlink($file->getPath());
-                }
-            } elseif ($file->isDir()) {
-                rmdir($file->getPath());
-            } elseif (is_readable($file->getPath())) {
-                unlink($file->getPath());
-            }
-        }
-        rmdir($dir);
+        $filesystem->deleteDirectory($dir);
     }
 }

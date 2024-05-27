@@ -62,15 +62,7 @@ class Cleanup
 
                 $absolutePath = $this->workingDir . $relativeDirectoryPath;
 
-                // Fix for Windows paths.
-                $absolutePath = str_replace(['\\','/'], DIRECTORY_SEPARATOR, $absolutePath);
-
-                $filesystem = new \Symfony\Component\Filesystem\Filesystem();
-                $isSymlink = function ($path) use ($filesystem): bool {
-                    return ! is_null($filesystem->readlink($path));
-                };
-
-                if ($isSymlink($absolutePath)) {
+                if ($absolutePath !== realpath($absolutePath)) {
                     if (false !== strpos('WIN', PHP_OS)) {
                         /**
                          * `unlink()` will not work on Windows. `rmdir()` will not work if there are files in the directory.
@@ -83,9 +75,7 @@ class Cleanup
                     } else {
                         unlink($absolutePath);
                     }
-                }
 
-                if ($absolutePath !== realpath($absolutePath)) {
                     continue;
                 }
 
