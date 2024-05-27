@@ -95,7 +95,7 @@ class IntegrationTestCase extends TestCase
 
         /** @var \SplFileInfo $file */
         foreach ($files as $file) {
-            if ($isSymlink($file->getRealPath())) {
+            if ($isSymlink($file->getPath())) {
                 if (false !== strpos('WIN', PHP_OS)) {
                     /**
                      * `unlink()` will not work on Windows. `rmdir()` will not work if there are files in the directory.
