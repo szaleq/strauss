@@ -6,6 +6,7 @@
 namespace BrianHenryIE\Strauss;
 
 use BrianHenryIE\Strauss\Composer\Extra\StraussConfig;
+use BrianHenryIE\Strauss\Helpers\Path;
 use Composer\Json\JsonFile;
 use FilesystemIterator;
 use League\Flysystem\Filesystem;
@@ -64,7 +65,7 @@ class Cleanup
                 $absolutePath = $this->workingDir . $relativeDirectoryPath;
 
                 if ($absolutePath !== realpath($absolutePath)) {
-                    if (false !== strpos('WIN', PHP_OS)) {
+                    if (false !== strpos(PHP_OS, 'WIN')) {
                         /**
                          * `unlink()` will not work on Windows. `rmdir()` will not work if there are files in the directory.
                          * "On windows, take care that `is_link()` returns false for Junctions."
