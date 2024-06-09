@@ -41,6 +41,8 @@ EOD;
 
         $result = substr(sprintf('%o', fileperms($this->testsWorkingDir . '/vendor-prefixed')), -4);
 
-        self::assertEquals('0755', $result);
+        $expectedChmod = strpos(PHP_OS, 'WIN') === 0 ? '0777' : '0755';
+
+        self::assertEquals($expectedChmod, $result);
     }
 }

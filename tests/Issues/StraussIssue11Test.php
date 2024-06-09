@@ -66,8 +66,9 @@ EOD;
 
         $input = $this->createMock(InputInterface::class);
         $straussConfig = new StraussConfig($composer, $input);
+		$ds  = DIRECTORY_SEPARATOR;
 
-        self::assertEqualsRN('src/Mozart/', $straussConfig->getTargetDirectory());
+        self::assertEqualsRN("src{$ds}Mozart{$ds}", $straussConfig->getTargetDirectory());
 
         self::assertEqualsRN("MZoo\\MBO_Sandbox\\Dependencies", $straussConfig->getNamespacePrefix());
     }

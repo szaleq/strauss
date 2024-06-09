@@ -64,6 +64,8 @@ EOD;
 
         $list = array_keys($files->getAllFilesAndDependencyList());
 
-        self::assertContains('google/apiclient/src/aliases.php', $list);
+        $ds = DIRECTORY_SEPARATOR;
+
+        self::assertContains("google{$ds}apiclient{$ds}src{$ds}aliases.php", $list);
     }
 }
