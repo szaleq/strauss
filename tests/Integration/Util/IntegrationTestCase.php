@@ -88,6 +88,8 @@ class IntegrationTestCase extends TestCase
             return;
         }
 
+        chdir($this->projectDir);
+
         $filesystem = new Filesystem(new LocalFilesystemAdapter('/'));
 
         $symfonyFilesystem = new \Symfony\Component\Filesystem\Filesystem();
